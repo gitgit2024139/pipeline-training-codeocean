@@ -175,18 +175,6 @@ comp <- exp_pr %>% left_join(exp, by = c('sampleID','Gene'))
 output_file = "/results/pan_cancer_cptac_expression.png"
 png(output_file, width=800, height=600)
 
-ggplot(comp %>% filter(Target_protein > 0 ), aes(x = Target_protein, y = Target_mRNA)) +
-  geom_point() +
-  geom_smooth(method=lm) +
-  stat_cor(method = "pearson") + 
-  facet_wrap(~Gene, nrow=3) +
-  theme_bw() +
-  labs(x='Protein Expression',y='mRNA expression',color='') +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.position = 'none')
-
- dev.off()
-
 ##### 4. CARIS q42025 ihc rna correlation
 caris_crc <- fread('/data/caris_cbioportal_crc_rwd360_2025q4/data_expression.txt')
 
@@ -227,4 +215,17 @@ ggplot(exp %>% mutate(WTS_CMS = ifelse(WTS_CMS=='', 'N/A',WTS_CMS)),
                      ))
 dev.off()
 ## treatment from cBIoportal
+
+Key Findings:
+
+The analysis centered on 3 PC and one CRC dataset to evaluate the TME and tumor-infiltrating lymphocytes (TILs).
+
+T-Cell Phenotypes: Tumor in both PC and CRC exhibited an increase in exhausted and terminal CD8+ T populations. Concurrently, a decrease in CD8 progenitor cells and an increase in effector memory CD+8 cells were observed.
+
+Inflammatory Heterogeneity: Hallmark inflammatory profiling revealed varied TME states; with certain tumors displayed elevated inflammatory signaling, indicative of an inflamed microenvironment.
+
+Homeostatic Disconnect: A signaling starvation state was observed in IL-7 and IL-15. While TILs maintain  high receptor density and the intracellular machinery to respond (as evidenced by high enrichment scores from HCD analysis), the TME is depleted of these essential ligands.
+
+   IL-21 axis evaluation: IL-21R expression is low but preserved in CD8+ effector cells. This suggests that     these cells remain responsive to IL-21, providing a therapeutic window to prevent terminal exhaustion  through targeted signaling.
+<img width="1521" height="172" alt="image" src="https://github.com/user-attachments/assets/231762d8-89bf-4fc2-87c2-104c8cfa62ff" />
 
